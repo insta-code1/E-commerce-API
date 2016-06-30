@@ -41,8 +41,6 @@ class OrderList(LoginRequiredMixin, ListView):
 		return super(OrderList, self).get_queryset().filter(user=user_checkout)
 
 
-
-
 class UserAddressCreateView(CreateView):
 	form_class = UserAddressForm
 	template_name = "forms.html"

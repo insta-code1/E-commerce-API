@@ -8,7 +8,7 @@ from orders.views import (
                     AddressSelectFormView, 
                     UserAddressCreateView, 
                     OrderList, 
-                    OrderDetail)
+                    OrderDetail,)
 
 from products.views import (
                     CategoryListAPIView,
@@ -39,6 +39,8 @@ urlpatterns = [
 
 ]
 
+
+#API url's
 urlpatterns += [
     url(r'^api/categories/$', CategoryListAPIView.as_view(), name='categories_api'),
     url(r'^api/categories/(?P<pk>\d+)/$', CategoryRetrieveAPIView.as_view(), name='category_detail_api'),

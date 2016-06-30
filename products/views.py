@@ -12,7 +12,8 @@ from django_filters import FilterSet, CharFilter, NumberFilter
 # Create your views here.
 
 from rest_framework import generics
-
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 
 
@@ -20,7 +21,12 @@ from rest_framework import generics
 from .forms import VariationInventoryFormSet, ProductFilterForm
 from .mixins import StaffRequiredMixin
 from .models import Product, Variation, Category
-from .serializers import CategorySerializer, ProductsSerializer, ProductDetailSerializer
+from .serializers import (
+	CategorySerializer,
+	ProductsSerializer,
+	ProductDetailSerializer,
+	ProductDetailUpdateSerializer, 
+	)
 
 
 class CategoryListAPIView(generics.ListAPIView):
@@ -29,11 +35,14 @@ class CategoryListAPIView(generics.ListAPIView):
 
 
 class CategoryRetrieveAPIView(generics.RetrieveAPIView):
+	authentication_classes = [SessionAuthentication]
+	permission_classes = [IsAuthenticated]
 	serializer_class = CategorySerializer
 	queryset = Category.objects.all()
 
 
 class ProductListAPIView(generics.ListAPIView):
+	permission_classes = [IsAuthenticated]
 	queryset = Product.objects.all()
 	serializer_class = ProductsSerializer
 
@@ -41,6 +50,10 @@ class ProductListAPIView(generics.ListAPIView):
 class ProductRetrieveAPIView(generics.RetrieveAPIView):
 	queryset = Product.objects.all()
 	serializer_class = ProductDetailSerializer
+
+# class ProductCreateAPIView(generics.CreateAPIView):
+# 	queryset = Product.objects.all()
+# 	serializer_class = ProductDetailUpdateSerializer
 
 
 class CategoryListView(ListView):
