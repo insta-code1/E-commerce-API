@@ -371,3 +371,81 @@ Quit the server with CONTROL-C.
 [30/Jun/2016 15:27:37] "GET /api/products/2/ HTTP/1.1" 200 5131
 [30/Jun/2016 15:27:52] "GET /api/products HTTP/1.1" 301 0
 [30/Jun/2016 15:27:52] "GET /api/products/ HTTP/1.1" 403 4273
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 30, 2016 - 15:25:02
+Django version 1.8.4, using settings 'ecommerce2.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+[30/Jun/2016 16:14:02] "GET /api/products/ HTTP/1.1" 500 102590
+[30/Jun/2016 16:16:42] "GET /api/products/ HTTP/1.1" 403 4273
+[30/Jun/2016 16:16:42] "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+[30/Jun/2016 16:16:42] "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+[30/Jun/2016 16:16:42] "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+[30/Jun/2016 16:16:42] "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+[30/Jun/2016 16:16:42] "GET /static/rest_framework/js/jquery-1.11.3.min.js HTTP/1.1" 304 0
+[30/Jun/2016 16:16:42] "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+[30/Jun/2016 16:16:42] "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+[30/Jun/2016 16:16:42] "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+[30/Jun/2016 16:16:42] "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+[30/Jun/2016 16:16:42] "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+[30/Jun/2016 16:16:42] "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+[30/Jun/2016 16:17:02] "GET /admin/ HTTP/1.1" 302 0
+[30/Jun/2016 16:17:02] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 1915
+[30/Jun/2016 16:17:07] "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+[30/Jun/2016 16:17:07] "GET /admin/ HTTP/1.1" 200 9141
+[30/Jun/2016 16:17:18] "GET /api/products/ HTTP/1.1" 200 6480
+[30/Jun/2016 16:17:48] "GET /api/products/?limit=1&offset=1 HTTP/1.1" 200 6955
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 30, 2016 - 16:13:21
+Django version 1.8.4, using settings 'ecommerce2.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+[30/Jun/2016 16:21:31] "GET /api/products/ HTTP/1.1" 200 7259
+[30/Jun/2016 16:21:31] "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+[30/Jun/2016 16:21:31] "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:31] "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+[30/Jun/2016 16:21:31] "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+[30/Jun/2016 16:21:31] "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+[30/Jun/2016 16:21:31] "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:31] "GET /static/rest_framework/js/jquery-1.11.3.min.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:31] "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:31] "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:31] "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:31] "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+[30/Jun/2016 16:21:42] "GET /api/products/ HTTP/1.1" 200 7259
+[30/Jun/2016 16:21:42] "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+[30/Jun/2016 16:21:42] "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+[30/Jun/2016 16:21:42] "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+[30/Jun/2016 16:21:42] "GET /static/rest_framework/js/jquery-1.11.3.min.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:42] "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+[30/Jun/2016 16:21:42] "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:42] "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:42] "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:42] "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:42] "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+[30/Jun/2016 16:21:42] "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+[30/Jun/2016 16:22:23] "GET /api/products/?limit=2&offset=2 HTTP/1.1" 200 7911
+[30/Jun/2016 16:22:34] "GET /api/products/?limit=2&offset=4 HTTP/1.1" 200 7742
+[30/Jun/2016 16:22:35] "GET /api/products/?limit=2&offset=6 HTTP/1.1" 200 7384
+[30/Jun/2016 16:22:36] "GET /api/products/?limit=2&offset=8 HTTP/1.1" 200 6657
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 30, 2016 - 16:21:28
+Django version 1.8.4, using settings 'ecommerce2.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 30, 2016 - 16:23:24
+Django version 1.8.4, using settings 'ecommerce2.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+[30/Jun/2016 16:29:43] "GET /api/cotegory HTTP/1.1" 404 4577
+[30/Jun/2016 16:29:49] "GET /api/category HTTP/1.1" 404 4577
+[30/Jun/2016 16:29:57] "GET /api/categories/ HTTP/1.1" 200 9380
