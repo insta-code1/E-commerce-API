@@ -449,3 +449,75 @@ Quit the server with CONTROL-C.
 [30/Jun/2016 16:29:43] "GET /api/cotegory HTTP/1.1" 404 4577
 [30/Jun/2016 16:29:49] "GET /api/category HTTP/1.1" 404 4577
 [30/Jun/2016 16:29:57] "GET /api/categories/ HTTP/1.1" 200 9380
+[30/Jun/2016 22:29:36] "GET / HTTP/1.1" 200 11826
+[30/Jun/2016 22:29:36] "GET /static/css/navbar-static-top.css HTTP/1.1" 200 516
+[30/Jun/2016 22:29:36] "GET /static/css/custom.css HTTP/1.1" 200 321
+[30/Jun/2016 22:29:36] "GET /static/css/bootstrap.min.css HTTP/1.1" 200 117305
+[30/Jun/2016 22:29:36] "GET /static/js/bootstrap.min.js HTTP/1.1" 200 35951
+[30/Jun/2016 22:29:36] "GET /static/js/custom.js HTTP/1.1" 200 616
+[30/Jun/2016 22:29:36] "GET /static/js/ie10-viewport-bug-workaround.js HTTP/1.1" 200 694
+[30/Jun/2016 22:29:36] "GET /media/products/headphones/headphones-None.jpg HTTP/1.1" 200 22367
+[30/Jun/2016 22:29:36] "GET /media/products/charging-cable/charging-cable-None.png HTTP/1.1" 200 86145
+[30/Jun/2016 22:29:36] "GET /media/products/iphone/iphone-None.jpeg HTTP/1.1" 200 80699
+[30/Jun/2016 22:29:36] "GET /media/products/mp3-player/mp3_player.jpg HTTP/1.1" 200 75417
+[30/Jun/2016 22:29:36] "GET /media/products/water-bottle/water-bottle-None.jpg HTTP/1.1" 200 115695
+[30/Jun/2016 22:29:36] "GET /media/products/iphone/featured/iphone-None.jpg HTTP/1.1" 200 297069
+[30/Jun/2016 22:29:36] "GET /favicon.ico HTTP/1.1" 404 4574
+[30/Jun/2016 22:29:36] "GET /cart/count/ HTTP/1.1" 200 12
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 30, 2016 - 16:26:07
+Django version 1.8.4, using settings 'ecommerce2.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+[30/Jun/2016 22:37:01] "GET /api/categories/?search=water HTTP/1.1" 200 9534
+[30/Jun/2016 22:37:33] "GET /api/products/?search=water HTTP/1.1" 200 7077
+[30/Jun/2016 22:37:33] "GET /static/rest_framework/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 30, 2016 - 22:36:37
+Django version 1.8.4, using settings 'ecommerce2.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+[30/Jun/2016 22:43:32] "GET /api/products/?search=phone HTTP/1.1" 200 8516
+[30/Jun/2016 22:43:54] "GET /api/products/?search=phone&limit=100 HTTP/1.1" 200 8642
+[30/Jun/2016 22:44:15] "GET /api/products/?search=phone&limit=100&ordering=-id HTTP/1.1" 200 8849
+[30/Jun/2016 22:44:27] "GET /api/products/?search=phone&limit=100&ordering=id HTTP/1.1" 200 8844
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 30, 2016 - 22:38:45
+Django version 1.8.4, using settings 'ecommerce2.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+[30/Jun/2016 22:59:13] "GET /api/products/?search=phone&limit=100&ordering=id HTTP/1.1" 500 89967
+[30/Jun/2016 22:59:36] "GET /api/products/?search=phone&limit=100&ordering=id HTTP/1.1" 500 103013
+[30/Jun/2016 23:00:02] "GET /api/products/?search=phone&limit=100&ordering=id HTTP/1.1" 500 116381
+/home/insta/Projects/ecommerce-2-api/local/lib/python2.7/site-packages/django/template/defaulttags.py:66: UserWarning: A {% csrf_token %} was used in a template, but the context did not provide the value.  This is usually caused by not using RequestContext.
+  "A {% csrf_token %} was used in a template, but the context "
+
+[30/Jun/2016 23:01:02] "GET /api/products/?search=phone&limit=100&ordering=id HTTP/1.1" 200 10836
+[30/Jun/2016 23:01:02] "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+[30/Jun/2016 23:01:02] "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+[30/Jun/2016 23:01:02] "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+[30/Jun/2016 23:01:02] "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+[30/Jun/2016 23:01:02] "GET /static/rest_framework/js/jquery-1.11.3.min.js HTTP/1.1" 304 0
+[30/Jun/2016 23:01:02] "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+[30/Jun/2016 23:01:02] "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+[30/Jun/2016 23:01:02] "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+[30/Jun/2016 23:01:02] "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+[30/Jun/2016 23:01:02] "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+[30/Jun/2016 23:01:02] "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 30, 2016 - 22:57:06
+Django version 1.8.4, using settings 'ecommerce2.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+/home/insta/Projects/ecommerce-2-api/local/lib/python2.7/site-packages/django/template/defaulttags.py:66: UserWarning: A {% csrf_token %} was used in a template, but the context did not provide the value.  This is usually caused by not using RequestContext.
+  "A {% csrf_token %} was used in a template, but the context "
+
+[30/Jun/2016 23:03:37] "GET /api/products/?q=phone&limit=100&ordering=id HTTP/1.1" 200 14443
