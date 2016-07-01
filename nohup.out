@@ -521,3 +521,15 @@ Quit the server with CONTROL-C.
   "A {% csrf_token %} was used in a template, but the context "
 
 [30/Jun/2016 23:03:37] "GET /api/products/?q=phone&limit=100&ordering=id HTTP/1.1" 200 14443
+[01/Jul/2016 10:45:22] "GET /api/products/?q=phone&limit=100&ordering=id HTTP/1.1" 200 14443
+[01/Jul/2016 10:45:22] "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+[01/Jul/2016 10:45:22] "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 304 0
+[01/Jul/2016 10:45:22] "GET /static/rest_framework/css/prettify.css HTTP/1.1" 304 0
+[01/Jul/2016 10:45:22] "GET /static/rest_framework/css/default.css HTTP/1.1" 304 0
+[01/Jul/2016 10:45:22] "GET /static/rest_framework/js/jquery-1.11.3.min.js HTTP/1.1" 304 0
+[01/Jul/2016 10:45:22] "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 304 0
+[01/Jul/2016 10:45:22] "GET /static/rest_framework/js/csrf.js HTTP/1.1" 304 0
+[01/Jul/2016 10:45:22] "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+[01/Jul/2016 10:45:22] "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 304 0
+[01/Jul/2016 10:45:22] "GET /static/rest_framework/js/default.js HTTP/1.1" 304 0
+[01/Jul/2016 10:45:22] "GET /static/rest_framework/img/grid.png HTTP/1.1" 304 0

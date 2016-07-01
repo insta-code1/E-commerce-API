@@ -6,11 +6,13 @@ from django.contrib import admin
 from carts.views import CartView, ItemCountView, CheckoutView, CheckoutFinalView
 from orders.views import (
                     AddressSelectFormView, 
-                    UserAddressCreateView, 
+                    UserAddressCreateView,
+                    UserCheckoutAPI, 
                     OrderList, 
                     OrderDetail,)
 
 from products.views import (
+                    APIHomeView,
                     CategoryListAPIView,
                     CategoryRetrieveAPIView,
                     ProductListAPIView,
@@ -42,6 +44,12 @@ urlpatterns = [
 
 #API url's
 urlpatterns += [
+
+    # Orders.views module API Imports
+    url(r'^api/user/checkout/$', UserCheckoutAPI.as_view(), name='user_checkout_api'),
+
+    # Products.views module API Imports
+    url(r'^api/$', APIHomeView.as_view(), name='home_api'),
     url(r'^api/categories/$', CategoryListAPIView.as_view(), name='categories_api'),
     url(r'^api/categories/(?P<pk>\d+)/$', CategoryRetrieveAPIView.as_view(), name='category_detail_api'),
     url(r'^api/products/$', ProductListAPIView.as_view(), name='products_api'),
