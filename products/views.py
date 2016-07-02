@@ -19,6 +19,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse as api_reverse
 from rest_framework.views import APIView
 
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from .filters import ProductFilter
 from .forms import VariationInventoryFormSet, ProductFilterForm
@@ -36,8 +37,8 @@ from .serializers import (
 # API CBV
 
 class APIHomeView(APIView):
-	authentication_classes = [SessionAuthentication]
-	permission_classes = [IsAuthenticated]
+	#authentication_classes = [SessionAuthentication, JSONWebTokenAuthentication]
+	#permission_classes = [IsAuthenticated]
 	def get(self, request, formate=None):
 		data = {
 			"products": {
