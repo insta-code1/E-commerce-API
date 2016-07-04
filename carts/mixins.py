@@ -1,29 +1,8 @@
 import ast
 import base64
 
-
-class TokenMixin(object):
-	token = None
-	def create_token(self, data_dict):
-		if type(data_dict) == type(dict()):
-			token = base64.b64encode(str(data_dict))
-			self.token = token
-			return token
-		else:
-			raise ValueError("Creating a token must be a Python dictionary.")
-
-
-
-	def parse_token(self, token=None):
-		if token is None:
-			return {}
-		try:
-			token_decoded = base64.b64decode(token)
-			token_dict = ast.literal_eval(token_decoded)
-			return token_dict
-		except:
-			return {}
-
+from rest_framework import status
+from .models import Cart
 
 class CartUpdateAPIMixin(object):
 	def update_cart(self, *args, **kwargs):
@@ -54,3 +33,63 @@ class CartUpdateAPIMixin(object):
 						flash_message = "Quantity has been updated successfully."
 					cart_item.quantity = qty
 					cart_item.save()
+
+
+class TokenMixin(object):
+	token = None
+	def create_token(self, data_dict):
+		if type(data_dict) == type(dict()):
+			token = base64.b64encode(str(data_dict))
+			self.token = token
+			return token
+		else:
+			raise ValueError("Creating a token must be a Python dictionary.")
+
+
+
+	def parse_token(self, token=None):
+		if token is None:
+			return {}
+		try:
+			token_decoded = base64.b64decode(token)
+			token_dict = ast.literal_eval(token_decoded)
+			return token_dict
+		except:
+			return {}
+
+
+
+
+class CartTokenMixin(TokenMixin, object):
+	token_param = "cart_token"
+	token = None
+	def get_cart_from_token(self):
+		request = self.request
+		response_status = status.HTTP_200_OK
+		cart_token = request.GET.get(self.token_param)
+
+		message = "This requires a vaild cart & cart token."
+		
+		cart_token_data = self.parse_token(cart_token)
+		cart_id = cart_token_data.get("cart_id")
+		try:
+			cart = Cart.objects.get(id=int(cart_id))
+		except:
+			cart = None
+
+		if cart == None:
+			data = {
+				"success": False,
+				"message": message,
+			}
+			response_status = status.HTTP_400_BAD_REQUEST
+			#return Response(data, status=status.HTTP_400_BAD_REQUEST)
+		else:
+			self.token = cart_token				
+			data = {
+				"cart": cart.id,
+				"success": True,
+				
+			}
+			#return Response(data)
+		return data, cart, response_status

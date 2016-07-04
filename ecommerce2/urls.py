@@ -6,6 +6,7 @@ from django.contrib import admin
 from carts.views import (
                     CartAPIView,
                     CartView,
+                    CheckoutAPIView,
                     ItemCountView,
                     CheckoutView,
                     CheckoutFinalView
@@ -59,11 +60,9 @@ urlpatterns += [
     url(r'^api/categories/$', CategoryListAPIView.as_view(), name='categories_api'),
     url(r'^api/categories/(?P<pk>\d+)/$', CategoryRetrieveAPIView.as_view(), name='category_detail_api'),
     url(r'^api/cart/$', CartAPIView.as_view(), name='cart_api'),
+    url(r'^api/checkout/$', CheckoutAPIView.as_view(), name='checkout_api'),
     url(r'^api/products/$', ProductListAPIView.as_view(), name='products_api'),
     url(r'^api/products/(?P<pk>\d+)/$', ProductRetrieveAPIView.as_view(), name='products_detail_api'),
-
-  
-    # Orders.views module API Imports
     url(r'^api/user/checkout/$', UserCheckoutAPI.as_view(), name='user_checkout_api'),
     ]
 

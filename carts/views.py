@@ -14,6 +14,7 @@ from django.views.generic.edit import FormMixin
 
 from rest_framework import filters
 from rest_framework import generics
+from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
@@ -29,38 +30,30 @@ from orders.models import UserCheckout, Order, UserAddress
 from products.models import Variation
 
 
+from .mixins import TokenMixin, CartUpdateAPIMixin, CartTokenMixin
 from .models import Cart, CartItem
-from .mixins import TokenMixin, CartUpdateAPIMixin
-
 from .serializers import CartItemSerializer
 
 
 
-class CartAPIView(TokenMixin, CartUpdateAPIMixin, APIView):
+
+
+
+class CheckoutAPIView(CartTokenMixin, TokenMixin, APIView):
+	def get(self, request, format=None):
+		data, cart_obj, response_status = self.get_cart_from_token()
+		return Response(data, status=response_status)
+
+
+
+
+class CartAPIView(CartTokenMixin, CartUpdateAPIMixin, APIView):
 	# authentication_classes = [SessionAuthentication]
 	# permission_classes = [IsAuthenticated]
+	token_param = "token"
 	cart = None
-	# def create_token(self, cart_id):
-	# 	data = {
-	# 		"cart_id": cart_id
-	# 	}
-	# 	token = base64.b64encode(str(data))
-	# 	self.token = token
-	# 	return token
-
 	def get_cart(self):
-		token_data = self.request.GET.get("token")
-		cart_obj = None
-		if token_data:
-			token_dict = self.parse_token(token=token_data)
-			cart_id = token_dict.get("cart_id")
-			try:
-				cart_obj = Cart.objects.get(id=cart_id)
-				
-			except:
-				pass
-			self.token = token_data
-		
+		data, cart_obj, response_status = self.get_cart_from_token()
 		if cart_obj == None:
 			cart = Cart()
 			cart.tax_percentage = 0.075
@@ -68,7 +61,7 @@ class CartAPIView(TokenMixin, CartUpdateAPIMixin, APIView):
 				cart.user = self.request.user
 			cart.save()
 			data = {
-			"cart_id": cart.id
+				"cart_id": str(cart.id)
 			}
 			self.create_token(data)
 			cart_obj = cart
@@ -80,15 +73,16 @@ class CartAPIView(TokenMixin, CartUpdateAPIMixin, APIView):
 		cart = self.get_cart()
 		self.cart = cart
 		self.update_cart()
-		items = CartItemSerializer(cart.cartitem_set.all(), many=True)
 		#token = self.create_token(cart.id)
+		items = CartItemSerializer(cart.cartitem_set.all(), many=True)
+		print cart.items.all()
 		data = {
 			"token": self.token,
 			"cart" : cart.id,
 			"total": cart.total,
 			"subtotal": cart.subtotal,
 			"tax_total": cart.tax_total,
-			"count":cart.items.count(),
+			"count": cart.items.count(),
 			"items": items.data,
 		}
 		return Response(data)
@@ -325,20 +319,6 @@ class CheckoutFinalView(CartOrderMixin, View):
 
 	def get(self, request, *args, **kwargs):
 		return redirect("checkout")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
