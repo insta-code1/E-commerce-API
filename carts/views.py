@@ -1,3 +1,5 @@
+import ast
+import base64
 import braintree
 
 from django.conf import settings
@@ -10,7 +12,15 @@ from django.views.generic.base import View
 from django.views.generic.detail import SingleObjectMixin, DetailView
 from django.views.generic.edit import FormMixin
 
-# Create your views here.
+from rest_framework import filters
+from rest_framework import generics
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
+from rest_framework.reverse import reverse as api_reverse
+from rest_framework.views import APIView
+
+
 
 from orders.forms import GuestCheckoutForm
 from orders.mixins import CartOrderMixin
@@ -20,6 +30,95 @@ from products.models import Variation
 
 
 from .models import Cart, CartItem
+
+
+
+class CartUpdateAPIMixin(object):
+	def update_cart(self, *args, **kwargs):
+		request = self.request
+		cart = self.cart
+		if cart:
+			item_id = request.GET.get("item")
+			delete_item = request.GET.get("delete", False)
+			flash_message = ""
+			item_added = False
+			if item_id:
+				item_instance = get_object_or_404(Variation, id=item_id)
+				qty = request.GET.get("qty", 1)
+				try:
+					if int(qty) < 1:
+						delete_item = True
+				except:
+					raise Http404
+				cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item_instance)
+				if created:
+					flash_message = "Successfully added to the cart"
+					item_added = True
+				if delete_item:
+					flash_message = "Item removed successfully."
+					cart_item.delete()
+				else:
+					if not created:
+						flash_message = "Quantity has been updated successfully."
+					cart_item.quantity = qty
+					cart_item.save()
+
+
+
+
+class CartAPIView(CartUpdateAPIMixin, APIView):
+	# authentication_classes = [SessionAuthentication]
+	# permission_classes = [IsAuthenticated]
+	token = None
+	cart = None
+	def create_token(self, cart_id):
+		data = {
+			"cart_id": cart_id
+		}
+		token = base64.b64encode(str(data))
+		self.token = token
+		return token
+
+	def get_cart(self):
+		token_data = self.request.GET.get("token")
+		cart_obj = None
+		if token_data:
+			token_decoded = base64.b64decode(token_data)
+			token_dict = ast.literal_eval(token_decoded)
+			cart_id = token_dict.get("cart_id")
+			try:
+				cart_obj = Cart.objects.get(id=cart_id)
+				
+			except:
+				pass
+			self.token = token_data
+		
+		if cart_obj == None:
+			cart = Cart()
+			cart.tax_percentage = 0.075
+			if self.request.user.is_authenticated():
+				cart.user = self.request.user
+			cart.save()
+			self.create_token(cart.id)
+			cart_obj = cart
+
+		return cart_obj
+
+
+	def get(self, request, format=None):
+		cart = self.get_cart()
+		self.cart = cart
+		self.update_cart()
+		#token = self.create_token(cart.id)
+		data = {
+			"token": self.token,
+			"cart" : cart.id,
+			"total": cart.total,
+			"subtotal": cart.subtotal,
+			"tax_total": cart.tax_total,
+			"items": cart.items.count()
+		}
+		return Response(data)
 
 
 
@@ -253,7 +352,6 @@ class CheckoutFinalView(CartOrderMixin, View):
 
 	def get(self, request, *args, **kwargs):
 		return redirect("checkout")
-
 
 
 

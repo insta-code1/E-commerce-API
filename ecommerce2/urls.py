@@ -3,7 +3,13 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from carts.views import CartView, ItemCountView, CheckoutView, CheckoutFinalView
+from carts.views import (
+                    CartAPIView,
+                    CartView,
+                    ItemCountView,
+                    CheckoutView,
+                    CheckoutFinalView
+                    )
 from orders.views import (
                     AddressSelectFormView, 
                     UserAddressCreateView,
@@ -52,6 +58,7 @@ urlpatterns += [
     url(r'^api/$', APIHomeView.as_view(), name='home_api'),
     url(r'^api/categories/$', CategoryListAPIView.as_view(), name='categories_api'),
     url(r'^api/categories/(?P<pk>\d+)/$', CategoryRetrieveAPIView.as_view(), name='category_detail_api'),
+    url(r'^api/cart/$', CartAPIView.as_view(), name='cart_api'),
     url(r'^api/products/$', ProductListAPIView.as_view(), name='products_api'),
     url(r'^api/products/(?P<pk>\d+)/$', ProductRetrieveAPIView.as_view(), name='products_detail_api'),
 
