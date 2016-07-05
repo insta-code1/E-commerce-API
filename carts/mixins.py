@@ -1,8 +1,9 @@
 import ast
 import base64
 
+from django.shortcuts import get_object_or_404
 from rest_framework import status
-from .models import Cart
+from .models import Cart, CartItem, Variation
 
 class CartUpdateAPIMixin(object):
 	def update_cart(self, *args, **kwargs):

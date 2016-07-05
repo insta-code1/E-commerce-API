@@ -26,7 +26,7 @@ from rest_framework.views import APIView
 from orders.forms import GuestCheckoutForm
 from orders.mixins import CartOrderMixin
 from orders.models import UserCheckout, Order, UserAddress
-
+from orders.serializers import OrderSerializer
 from products.models import Variation
 
 
@@ -36,12 +36,41 @@ from .serializers import CartItemSerializer
 
 
 
-
-
-
-class CheckoutAPIView(CartTokenMixin, TokenMixin, APIView):
+class CheckoutAPIView(CartTokenMixin, APIView):
 	def get(self, request, format=None):
 		data, cart_obj, response_status = self.get_cart_from_token()
+
+		user_checkout_id = request.GET.get("checkout_id")
+		try:
+			user_checkout = UserCheckout.objects.get(id = int(user_checkout_id))
+		except:
+			user_checkout = None
+
+		if user_checkout == None:
+			data = {
+				"message": "A user or guest user is required to continue."
+			}
+			response_status = status.HTTP_400_BAD_REQUEST
+			return Response(data, status=response_status)
+
+		if cart_obj:
+			if cart_obj.items.count() == 0:
+				data = {
+					"message": "Your cart is Empty."
+				}
+				response_status = status.HTTP_400_BAD_REQUEST
+			else:
+				order, created = Order.objects.get_or_create(cart=cart_obj)
+				if not order.user:
+					order.user = user_checkout
+				if order.is_complete:
+					order.cart.is_complete()
+					data = {
+						"message": "This order has been completed."
+					}
+					return Response(data)
+				order.save()
+				data = OrderSerializer(order).data
 		return Response(data, status=response_status)
 
 
@@ -54,7 +83,7 @@ class CartAPIView(CartTokenMixin, CartUpdateAPIMixin, APIView):
 	cart = None
 	def get_cart(self):
 		data, cart_obj, response_status = self.get_cart_from_token()
-		if cart_obj == None:
+		if cart_obj == None or not cart_obj.active:
 			cart = Cart()
 			cart.tax_percentage = 0.075
 			if self.request.user.is_authenticated():
@@ -319,6 +348,5 @@ class CheckoutFinalView(CartOrderMixin, View):
 
 	def get(self, request, *args, **kwargs):
 		return redirect("checkout")
-
 
 
