@@ -16,7 +16,10 @@ from orders.views import (
                     UserAddressCreateView,
                     UserCheckoutAPI, 
                     OrderList, 
-                    OrderDetail,)
+                    OrderDetail,
+                    UserAddressCreateAPIView,
+                    UserAddressListAPIView,
+                    )
 
 from products.views import (
                     APIHomeView,
@@ -63,6 +66,8 @@ urlpatterns += [
     url(r'^api/checkout/$', CheckoutAPIView.as_view(), name='checkout_api'),
     url(r'^api/products/$', ProductListAPIView.as_view(), name='products_api'),
     url(r'^api/products/(?P<pk>\d+)/$', ProductRetrieveAPIView.as_view(), name='products_detail_api'),
+    url(r'^api/user/address/$', UserAddressListAPIView.as_view(), name='user_address_list_api'),
+    url(r'^api/user/address/create/$', UserAddressCreateAPIView.as_view(), name='user_address_create_api'),
     url(r'^api/user/checkout/$', UserCheckoutAPI.as_view(), name='user_checkout_api'),
     ]
 

@@ -40,7 +40,9 @@ class CheckoutAPIView(CartTokenMixin, APIView):
 	def get(self, request, format=None):
 		data, cart_obj, response_status = self.get_cart_from_token()
 
-		user_checkout_id = request.GET.get("checkout_id")
+		user_checkout_token = self.request.GET.get("checkout_token")
+		user_checkout_data = self.parse_token(user_checkout_token)
+		user_checkout_id = user_checkout_data["user_checkout_id"]
 		try:
 			user_checkout = UserCheckout.objects.get(id = int(user_checkout_id))
 		except:
