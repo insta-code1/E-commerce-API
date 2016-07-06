@@ -23,20 +23,28 @@ from .serializers import UserAddressSerializer
 User = get_user_model()
 
 
+""" 
+
+Notes for changes.
+
+
+"""
+
+
 class UserAddressCreateAPIView(CreateAPIView):
-	model = UserAddress	
+	model = UserAddress
 	serializer_class = UserAddressSerializer
 
 
 class UserAddressListAPIView(TokenMixin, ListAPIView):
-	model = UserAddress	
+	model = UserAddress
 	queryset = UserAddress.objects.all()
 	serializer_class = UserAddressSerializer
 
 	def get_queryset(self, *args, **kwargs):
 		user_checkout_token = self.request.GET.get("checkout_token")
 		user_checkout_data = self.parse_token(user_checkout_token)
-		user_checkout_id = user_checkout_data["user_checkout_id"]
+		user_checkout_id = user_checkout_data.get("user_checkout_id")
 		if self.request.user.is_authenticated():
 			return UserAddress.objects.filter(user__user=self.request.user)
 		elif user_checkout_id:
@@ -45,11 +53,11 @@ class UserAddressListAPIView(TokenMixin, ListAPIView):
 			return []
 
 
-class UserCheckoutMixin(TokenMixin, object):
 
+class UserCheckoutMixin(TokenMixin, object):
 	def user_failure(self, message=None):
 		data = {
-			"message": "There was an error. Please try again",
+			"message": "There was an error. Please try again.",
 			"success": False
 		}
 		if message:
@@ -71,25 +79,24 @@ class UserCheckoutMixin(TokenMixin, object):
 			
 		elif email:
 			try:
-				user_checkout = UserCheckout.objects.get_or_create(email=email)[0] #(instance, created)
+				user_checkout = UserCheckout.objects.get_or_create(email=email)[0]
 				if user:
 					user_checkout.user = user
 					user_checkout.save()
 			except:
-				pass
+				pass #(instance, created)
 		else:
 			pass
 
 		if user_checkout:
 			data["success"]= True
-
 			data["braintree_id"] = user_checkout.get_braintree_id
 			data["user_checkout_id"] = user_checkout.id
 			data["user_checkout_token"] = self.create_token(data)
 			
 			del data["braintree_id"]
 			del data["user_checkout_id"]
-			data["token_client_token"] = user_checkout.get_client_token()
+			data["braintree_client_token"] = user_checkout.get_client_token()
 
 		return data
 
@@ -108,10 +115,10 @@ class UserCheckoutAPI(UserCheckoutMixin, APIView):
 				data = self.get_checkout_data(user=request.user, email=email)
 			else:
 				data = self.get_checkout_data(user=request.user)
-		elif email and not user.is_authenticated():
+		elif email and not request.user.is_authenticated():
 			data = self.get_checkout_data(email=email)
 		else:
-			data = self.user_failure(message="Make sure you are authenticated or useing a valid email.")	
+			data = self.user_failure(message="Make sure you are authenticated or using a valid email.")
 		return Response(data)
 
 

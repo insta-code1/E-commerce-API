@@ -32,48 +32,107 @@ from products.models import Variation
 
 from .mixins import TokenMixin, CartUpdateAPIMixin, CartTokenMixin
 from .models import Cart, CartItem
-from .serializers import CartItemSerializer
+from .serializers import CartItemSerializer, CheckoutSerializer
 
 
 
-class CheckoutAPIView(CartTokenMixin, APIView):
-	def get(self, request, format=None):
-		data, cart_obj, response_status = self.get_cart_from_token()
+class CheckoutAPIView(TokenMixin, APIView):
+	
+	def post(self, request,format=None):
+		data = request.data
+		serializers = CheckoutSerializer(data=data)
+		if serializers.is_valid(raise_exception=True):
+			print "valid data!@!@"
+			data = serializers.data
+			user_checkout_id = data.get("user_checkout_id")
+			cart_id = data.get("cart_id")
+			billing_address = data.get("billing_address")
+			shipping_address = data.get("shipping_address")
 
-		user_checkout_token = self.request.GET.get("checkout_token")
-		user_checkout_data = self.parse_token(user_checkout_token)
-		user_checkout_id = user_checkout_data["user_checkout_id"]
-		try:
-			user_checkout = UserCheckout.objects.get(id = int(user_checkout_id))
-		except:
-			user_checkout = None
-
-		if user_checkout == None:
-			data = {
-				"message": "A user or guest user is required to continue."
-			}
-			response_status = status.HTTP_400_BAD_REQUEST
-			return Response(data, status=response_status)
-
-		if cart_obj:
-			if cart_obj.items.count() == 0:
-				data = {
-					"message": "Your cart is Empty."
+			user_checkout = UserCheckout.objects.get(id=user_checkout_id)
+			cart_obj = Cart.objects.get(id=cart_id)
+			s_a = UserAddress.objects.get(id=shipping_address)
+			b_a = UserAddress.objects.get(id=billing_address)
+			order, created = Order.objects.get_or_create(cart=cart_obj, user=user_checkout)
+			if not order.is_complete:
+				order.shipping_address = s_a
+				order.billing_address = b_a
+				order_save()
+				order_data = {
+					"order_id": order.id,
+					"user_checkout_id": user_checkout_id
 				}
-				response_status = status.HTTP_400_BAD_REQUEST
-			else:
-				order, created = Order.objects.get_or_create(cart=cart_obj)
-				if not order.user:
-					order.user = user_checkout
-				if order.is_complete:
-					order.cart.is_complete()
-					data = {
-						"message": "This order has been completed."
+				order_token = self.create_token(order_data)
+		response = {
+					"order_token": order_token
 					}
-					return Response(data)
-				order.save()
-				data = OrderSerializer(order).data
-		return Response(data, status=response_status)
+		
+		return Response(response)
+
+
+	# def get(self, request, format=None):
+	# 	data, cart_obj, response_status = self.get_cart_from_token()
+
+	# 	user_checkout_token = self.request.GET.get("checkout_token")
+	# 	user_checkout_data = self.parse_token(user_checkout_token)
+	# 	user_checkout_id = user_checkout_data.get("user_checkout_id")
+	# 	billing_address = self.request.GET.get("billing")
+	# 	shipping_address = self.request.GET.get("shipping")
+	# 	billing_obj, shipping_obj = None, None
+		
+	# 	try:
+	# 		user_checkout = UserCheckout.objects.get(id = int(user_checkout_id))
+	# 	except:
+	# 		user_checkout = None
+
+	# 	if user_checkout == None:
+	# 		data = {
+	# 			"message": "A user or guest user is required to continue."
+	# 		}
+	# 		response_status = status.HTTP_400_BAD_REQUEST
+	# 		return Response(data, status=response_status)
+
+	# 	if billing_address:
+	# 		try:
+	# 			billing_obj = UserAddress.objects.get(user=user_checkout, id=int(billing_address))
+	# 		except:
+	# 			pass
+		
+	# 	if shipping_address:
+	# 		try:
+	# 			shipping_obj = UserAddress.objects.get(user=user_checkout, id=int(shipping_address))
+	# 		except:
+	# 			pass
+
+	# 	if not billing_obj or not shipping_obj:
+	# 		data = {
+	# 			"message": "A valid billing or shipping is needed."
+	# 		}
+	# 		response_status = status.HTTP_400_BAD_REQUEST
+	# 		return Response(data, status=response_status)
+
+
+	# 	if cart_obj:
+	# 		if cart_obj.items.count() == 0:
+	# 			data = {
+	# 				"message": "Your cart is Empty."
+	# 			}
+	# 			response_status = status.HTTP_400_BAD_REQUEST
+	# 		else:
+	# 			order, created = Order.objects.get_or_create(cart=cart_obj)
+	# 			if not order.user:
+	# 				order.user = user_checkout
+	# 			if order.is_complete:
+	# 				order.cart.is_complete()
+	# 				data = {
+	# 					"message": "This order has been completed."
+	# 				}
+	# 				return Response(data)
+	# 			order.billing_address = billing_obj
+	# 			order.shipping_address = shipping_obj
+	# 			order.save()
+	# 			data = OrderSerializer(order).data
+	# 	return Response(data, status=response_status)
 
 
 
@@ -350,5 +409,20 @@ class CheckoutFinalView(CartOrderMixin, View):
 
 	def get(self, request, *args, **kwargs):
 		return redirect("checkout")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

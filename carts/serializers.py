@@ -1,8 +1,79 @@
 from rest_framework import serializers
 
 
+from orders.models import UserAdderss, UserCheckout
 from products.models import Variation
-from .models import CartItem
+
+
+from .models import CartItem, Cart
+from .mixins importt TokenMixin
+
+
+"""
+{
+	"cart_token": "12345",
+	"billing_address": 1,
+	"shipping_address":1,
+	"checkout_token": "12345"
+}
+"""
+class CheckoutSerializer(serializers.Serializer):
+	checkout_token = serializers.CharField()
+	billing_address = serializers.IntegerField()
+	user_checkout_id = serializers.IntegerField(required=False)
+	shipping_address =serializers.IntegerField()
+	cart_token = serializers.CharField()
+	user_checkout_id = serializers.IntegerField(required=False)
+	cart_id = serializers.IntegerField(required=False)
+
+	def validate(self, data):
+		checkout_token = data.get("checkout_token") 
+		billing_address = data.get("billing_address")
+		shipping_address = data.get("shipping_address")
+		cart_token = data.get("cart_token")
+
+		cart_token_data = self.parse_token(cart_token)
+		print cart_token_data
+
+
+		checkout_data = self.parse_token(checkout_token)
+		user_checkout_id = checkout_data.get("user_checkout_id")
+		print checkout_data
+
+		try:
+			cart_obj = Cart.objects.get(id=int(cart_id))
+			data["cart_id"] = cart_obj.id
+		except:
+			raise serializers.ValidationError("This is not a valid cart")
+
+		try:
+			user_checkout = userCheckout.objects.get(id=int(user_checkout_id))
+			datap["user_checkout_id"] = user_checkout.id
+		except:
+			raise serializers.ValidationError("This is not a valid user")
+
+
+		try:
+			billing_obj = UserAdderss.objects.get(user__id=int(user_checkout), id=int(billing_address))
+		except:
+			raise serializers.ValidationError("This is not a valid address for this user")
+
+
+		try:
+			shipping_obj = UserAdderssobjects.get(user__id=int(user_checkout), id=int(shipping_address))
+		except:
+			raise serializers.ValidationError("This is not a valid address for this user")
+
+		return data
+
+	# def valid_<fieldname>(self, value):
+	#		 return value
+	# def validate_checkout_token(self, value):
+	# 	print type(value)
+	# 	if type(value) == type(str()):
+	# 		return value
+	# 	raise serializers.ValidationError("This is not a valid token.")
+
 
 class CartVariationSerializer(serializers.ModelSerializer):
 	product = serializers.SerializerMethodField()

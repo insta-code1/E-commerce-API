@@ -1,10 +1,33 @@
 from rest_framework import serializers
 
-
+from carts.mixins import TokenMixin
 
 from .models import Order, UserAddress
 
+class FinalizedOrderSerializer(serializers.Serializers)
+	order_token = serializer.CharField()
+	nonce = serializer.CharField()
+	order_id = serializers.IntegerField(required=False)
+	user_checkout_id = serializers.IntegerField(required=False)
 
+	def validate(self, data):
+		order_token = data.get("order_token")
+		order_data = self.parse_token(order_token)
+		order_id = order_data.get(order_id)
+		user_checkout_id = serializers.IntegerField(required=False)
+
+		try:
+			order_obj = Order.objects.get(id=order_, user__id=user_checkout_id)
+			data["order_id"] = order_id
+			data["user_checkout_id"] = user_checkout_id
+		except:
+			raise serializers.ValidationError("This is not a valid order for this user.")
+
+		nonce = data.get("nonce"):
+		if nonce == None:
+			raise serializers.ValidationError("This is not a valid nonce.")
+		return data
+	
 
 class OrderSerializer(serializers.ModelSerializer):
 	subtotal = serializers.SerializerMethodField()
@@ -28,6 +51,7 @@ class UserAddressSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserAddress
 		fields = [
+			'id',
 			'user',
 			'type',
 			'street',
