@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <title>eCommerce 2 Test</title>
+  </head>
+  <body>
+
+  <div class="container">
+    <h1>Payment test</h1>
+    <form id="checkout"  method='POST' action=".">
+      <div id="payment-form"></div>
+      <input type='submit' value='Pay test' class='btn btn-default'>
+
+      </p>
+    </form>    
+  </div> <!-- /container -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script>
+  var clientToken = "eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJhNGRkMmFhMmQzOTU1M2E4NmNmMDZlYjIwZTRkM2I1ZGMzNTE4YzZlMTQ5MmRiODgwY2RlMWE1NWM2MDdhMjM5fGNyZWF0ZWRfYXQ9MjAxNi0wNy0wN1QyMjo0NDoxNi4zMTE5NjczOTIrMDAwMFx1MDAyNmN1c3RvbWVyX2lkPTIxNzg4MjMyXHUwMDI2bWVyY2hhbnRfaWQ9aDVja3RzM204OHdxM3BkY1x1MDAyNnB1YmxpY19rZXk9OW14cDh3dGJuODZoczVkdiIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy9oNWNrdHMzbTg4d3EzcGRjL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvaDVja3RzM204OHdxM3BkYy9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vaDVja3RzM204OHdxM3BkYyJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjp0cnVlLCJwYXlwYWxFbmFibGVkIjp0cnVlLCJwYXlwYWwiOnsiZGlzcGxheU5hbWUiOiJpbnN0YWNvZGUiLCJjbGllbnRJZCI6bnVsbCwicHJpdmFjeVVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS9wcCIsInVzZXJBZ3JlZW1lbnRVcmwiOiJodHRwOi8vZXhhbXBsZS5jb20vdG9zIiwiYmFzZVVybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9jaGVja291dC5wYXlwYWwuY29tIiwiZGlyZWN0QmFzZVVybCI6bnVsbCwiYWxsb3dIdHRwIjp0cnVlLCJlbnZpcm9ubWVudE5vTmV0d29yayI6dHJ1ZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJpbnN0YWNvZGUiLCJjdXJyZW5jeUlzb0NvZGUiOiJFVVIifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6Img1Y2t0czNtODh3cTNwZGMiLCJ2ZW5tbyI6Im9mZiJ9";
+
+  braintree.setup(clientToken, "dropin", {
+    container: "payment-form",
+    onPaymentMethodReceived: function (obj) {
+      console.log(obj.nonce)
+    }
+  });
+  </script>
+      
+  </body>
+</html>
+
+
+

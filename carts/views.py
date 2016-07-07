@@ -26,7 +26,7 @@ from rest_framework.views import APIView
 from orders.forms import GuestCheckoutForm
 from orders.mixins import CartOrderMixin
 from orders.models import UserCheckout, Order, UserAddress
-from orders.serializers import OrderSerializer
+from orders.serializers import OrderSerializer, FinalizedOrderSerializer
 from products.models import Variation
 
 
@@ -34,6 +34,77 @@ from .mixins import TokenMixin, CartUpdateAPIMixin, CartTokenMixin
 from .models import Cart, CartItem
 from .serializers import CartItemSerializer, CheckoutSerializer
 
+"""
+{
+	"order_token":"eydicmFpbnRyZWVfaWQnOiB1JzIxNzg4MjMyJywgJ3VzZXJfY2hlY2tvdXRfaWQnOiA3LCAnc3VjY2Vzcyc6IFRydWV9",
+	"payment_mentod_nonce": "abc123"
+}
+
+"""
+
+
+
+class CheckoutFinalizeAPIView(TokenMixin, APIView):
+	def get(self, request, format=None):
+		response = {}
+		order_token = request.GET.get('order_token')
+		if order_token:
+			checkout_id = self.parse_token(order_token).get("user_checkout_id")
+			if checkout_id:
+				checkout = UserCheckout.objects.get(id=checkout_id)
+				client_token = checkout.get_client_token()
+				response["client_token"] = client_token
+				return Response(response)
+		else:
+			response["message"] = "This method is not allowed"
+			return Response(response, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+
+
+	def post(self, request, format=None):
+		data = request.data
+		response = {}
+		serializer = FinalizedOrderSerializer(data=data)
+		if serializer.is_valid(raise_exception=True):
+			request_data = serializer.data
+			order_id = request_data.get("order_id")
+			order = Order.objects.get(id=order_id)
+			if not order.is_complete:		
+				order_total = order.order_total
+				nonce = request_dataT.get("payment_method_nonce")
+				if nonce:
+					result = braintree.Transaction.sale({
+				    	"amount": order_total,
+					    "payment_method_nonce": nonce,
+					    "billing": {
+						    "postal_code": "%s" %(order.billing_address.zipcode),
+						    
+						 },
+					    "options": {
+					        "submit_for_settlement": True
+					    			}
+						})
+					result = result.is_success
+					if success:
+						#result.transaction.id to order
+						order.mark_completed(order_id=result.transaction.id)
+						order.cart.is_complete()
+						response["message"] = "Your order has been completed."
+						response["final_order_id"] = order.order_id
+						response["success"] = True
+					else:
+						#messages.success(request, "There was a problem with your order.")
+						messages.success(request, "%s" %(result.message))
+						response["message"] = result.message
+						response["success"] = False
+
+						return redirect("checkout")
+			else:
+				response["message"] = "Order has already been completed."
+				response["success"] = False
+	
+		return Response(response)
 
 
 class CheckoutAPIView(TokenMixin, APIView):

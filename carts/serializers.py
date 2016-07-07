@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
 
-from orders.models import UserAdderss, UserCheckout
+from orders.models import UserAddress, UserCheckout
 from products.models import Variation
 
 
 from .models import CartItem, Cart
-from .mixins importt TokenMixin
+from .mixins import TokenMixin
 
 
 """

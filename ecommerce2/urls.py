@@ -9,7 +9,8 @@ from carts.views import (
                     CheckoutAPIView,
                     ItemCountView,
                     CheckoutView,
-                    CheckoutFinalView
+                    CheckoutFinalizeAPIView,
+                    CheckoutFinalView,
                     )
 from orders.views import (
                     AddressSelectFormView, 
@@ -64,6 +65,7 @@ urlpatterns += [
     url(r'^api/categories/(?P<pk>\d+)/$', CategoryRetrieveAPIView.as_view(), name='category_detail_api'),
     url(r'^api/cart/$', CartAPIView.as_view(), name='cart_api'),
     url(r'^api/checkout/$', CheckoutAPIView.as_view(), name='checkout_api'),
+    url(r'^api/checkout/finalize/$', CheckoutFinalizeAPIView.as_view(), name='checkout_finalize_api'),
     url(r'^api/products/$', ProductListAPIView.as_view(), name='products_api'),
     url(r'^api/products/(?P<pk>\d+)/$', ProductRetrieveAPIView.as_view(), name='products_detail_api'),
     url(r'^api/user/address/$', UserAddressListAPIView.as_view(), name='user_address_list_api'),
