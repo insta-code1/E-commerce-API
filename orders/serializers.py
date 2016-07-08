@@ -29,12 +29,14 @@ class FinalizedOrderSerializer(serializers.Serializer):
 		return data
 	
 
-class OrderSerializer(serializers.ModelSerializer):
+class OrderDetailSerializer(serializers.ModelSerializer):
+	url = serializers.HyperlinkedIdentityField(view_name="order_detial_api")
 	subtotal = serializers.SerializerMethodField()
 	class Meta:
 		model = Order
 		fields = [
-			'id',
+			'url',
+			'order_id'
 			'user',
 			'shipping_address',
 			'billing_address',

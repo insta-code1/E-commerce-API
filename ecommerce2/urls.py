@@ -16,8 +16,10 @@ from orders.views import (
                     AddressSelectFormView, 
                     UserAddressCreateView,
                     UserCheckoutAPI, 
-                    OrderList, 
+                    OrderList,
+                    OrderListAPIView, 
                     OrderDetail,
+                    OrderRetrieveAPIView,
                     UserAddressCreateAPIView,
                     UserAddressListAPIView,
                     )
@@ -57,8 +59,8 @@ urlpatterns = [
 urlpatterns += [
 
     
-    url(r'^api/auth/refresh/$', 'rest_framework_jwt.views.refresh_jwt_token'),   
-    url(r'^api/auth/token/$', 'rest_framework_jwt.views.obtain_jwt_token'),
+    url(r'^api/auth/refresh/$', 'rest_framework_jwt.views.refresh_jwt_token', name='refresh_token_api'),   
+    url(r'^api/auth/token/$', 'rest_framework_jwt.views.obtain_jwt_token', name='auth_login_api'),
      # Products.views module API Imports
     url(r'^api/$', APIHomeView.as_view(), name='home_api'),
     url(r'^api/categories/$', CategoryListAPIView.as_view(), name='categories_api'),
@@ -66,6 +68,8 @@ urlpatterns += [
     url(r'^api/cart/$', CartAPIView.as_view(), name='cart_api'),
     url(r'^api/checkout/$', CheckoutAPIView.as_view(), name='checkout_api'),
     url(r'^api/checkout/finalize/$', CheckoutFinalizeAPIView.as_view(), name='checkout_finalize_api'),
+    url(r'^api/orders/$', OrderListAPIView.as_view(), name='orders_api'),
+    url(r'^api/orders/(?P<pk>\d+)/$', OrderRetrieveAPIView.as_view(), name='order_detail_api'),
     url(r'^api/products/$', ProductListAPIView.as_view(), name='products_api'),
     url(r'^api/products/(?P<pk>\d+)/$', ProductRetrieveAPIView.as_view(), name='products_detail_api'),
     url(r'^api/user/address/$', UserAddressListAPIView.as_view(), name='user_address_list_api'),

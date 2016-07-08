@@ -34,6 +34,24 @@ from .serializers import (
 	)
 
 
+"""
+urlpatterns += [
+
+    
+       # Products.views module API Imports
+  
+    url(r'^api/orders/$', OrderListAPIView.as_view(), name='order_list_api'),
+    url(r'^api/orders/(?P<pk>\d+)/$', OrderRetrieveAPIView.as_view(), name='order_detail_api'),
+    url(r'^api/user/address/$', UserAddressListAPIView.as_view(), name='user_address_list_api'),
+    url(r'^api/user/address/create/$', UserAddressCreateAPIView.as_view(), name='user_address_create_api'),
+    url(r'^api/user/checkout/$', UserCheckoutAPI.as_view(), name='user_checkout_api'),
+    ]
+
+"""
+
+
+
+
 # API CBV
 
 class APIHomeView(APIView):
@@ -41,14 +59,33 @@ class APIHomeView(APIView):
 	#permission_classes = [IsAuthenticated]
 	def get(self, request, formate=None):
 		data = {
+			"address": {
+				"url": api_reverse("user_address_list_api", request=request),
+				"create": api_reverse("user_address_create_api", request=request)
+			},
+
+			"auth": {
+				"login_url": api_reverse("auth_login_api", request=request),
+				"refresh_url": api_reverse("auth_login_api", request=request),
+				"user_checkout": api_reverse("user_checkout_api", request=request)
+			},	
+			"categories": {
+				"count": Category.objects.all().count(),
+				"url" : api_reverse("categories_api", request=request)
+			},
+			"checkout": {
+				"cart": api_reverse("cart_api", request=request),
+				"checkout": api_reverse("checkout_api", request=request),
+				"finalize": api_reverse("checkout_finalize_api", request=request),
+			},
 			"products": {
 				"count": Product.objects.all().count(),
 				"url": api_reverse("products_api", request=request)
 			},
-			"categories": {
-				"count": Category.objects.all().count(),
-				"url" : api_reverse("categories_api", request=request)
+			"orders": {
+				"url": api_reverse("orders_api", request=request)
 			}
+
 		}
 		return Response(data)
 
@@ -59,14 +96,14 @@ class CategoryListAPIView(generics.ListAPIView):
 
 
 class CategoryRetrieveAPIView(generics.RetrieveAPIView):
-	authentication_classes = [SessionAuthentication]
-	permission_classes = [IsAuthenticated]
+	#authentication_classes = [SessionAuthentication]
+	#permission_classes = [IsAuthenticated]
 	serializer_class = CategorySerializer
 	queryset = Category.objects.all()
 
 
 class ProductListAPIView(generics.ListAPIView):
-	permission_classes = [IsAuthenticated]
+	#permission_classes = [IsAuthenticated]
 	queryset = Product.objects.all()
 	serializer_class = ProductsSerializer
 	filter_backends = [

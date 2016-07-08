@@ -26,7 +26,7 @@ from rest_framework.views import APIView
 from orders.forms import GuestCheckoutForm
 from orders.mixins import CartOrderMixin
 from orders.models import UserCheckout, Order, UserAddress
-from orders.serializers import OrderSerializer, FinalizedOrderSerializer
+from orders.serializers import FinalizedOrderSerializer, OrderDetailSerializer
 from products.models import Variation
 
 
